@@ -1,0 +1,12 @@
+FROM python:3.9-alpine3.12
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY api.py ./
+
+CMD ["python", "./api.py"]
+
+EXPOSE 80

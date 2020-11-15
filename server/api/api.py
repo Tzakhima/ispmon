@@ -8,7 +8,7 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 # Redis
-message_r = redis.Redis(host='localhost', port=6379, db=0)
+message_r = redis.Redis(host='127.0.0.1', port=6379, db=0)
 
 
 @app.route('/metrics', methods=['POST'])

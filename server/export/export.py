@@ -20,16 +20,16 @@ def get_metrics():
     d_data = []
     for x in data:
         d_data.append(pickle.loads(x))
-
+    print(d_data)
     template = '''
     {%- for metric in metrics %}
     {%- for destination, data in metric['ping'].items() %}
-ispmon:pacekt_loss_percent{'unique_id'= '{{ metric["unique_id"] }}', 'country'= '{{ metric["country"] }}, 'isp'= '{{ metric["isp"] }}', 'destiantion' = {{  destination  }} }  {{ data['packet_loss_rate']}}
-ispmon:rtt_avg{'unique_id'= '{{ metric["unique_id"] }}', 'country'= '{{ metric["country"] }}, 'isp'= '{{ metric["isp"] }}', 'destiantion' = {{  destination  }} }  {{ data['rtt_avg']}}
+ispmon:pacekt_loss_percent{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['packet_loss_rate'] }}
+ispmon:rtt_avg{ unique_id= "{{ metric['unique_id'] }}", country= "{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['rtt_avg'] }}
     {%- endfor %}
     {%- if metric['speed']['available'] == true %}
-ispom:speed_download{ 'unique_id'= '{{ metric["unique_id"] }}', 'country'= '{{ metric["country"] }}, 'isp'= '{{ metric["isp"] }}' } {{ metric['speed']['results']['download'] }}
-ispom:speed_upload{ 'unique_id'= '{{ metric["unique_id"] }}', 'country'= '{{ metric["country"] }}, 'isp'= '{{ metric["isp"] }}' } {{ metric['speed']['results']['upload'] }}
+ispmon:speed_download{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}" } {{ metric['speed']['results']['download'] }}
+ispmon:speed_upload{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}" } {{ metric['speed']['results']['upload'] }}
     {%- endif %}
     {%- endfor %}
     '''
