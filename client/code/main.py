@@ -26,9 +26,9 @@ log.setLevel(logging.INFO)
 # Global PING objects and parameters
 ping_parser = pingparsing.PingParsing()
 transmitter = pingparsing.PingTransmitter()
-ping_hosts = ["beacon.taboola.com", "google.com", "1.1.1.1", ]
+ping_hosts = ["google.com", "youtube.com", "facebook.com", "whatsapp.com", "tiktok.com"]
 ping_duration = 60  # sec
-ping_option = "-i 0.5"  # Additional PING option command
+ping_option = "-i 1"  # Additional PING option command
 
 
 # SpeedTest Parameters
@@ -60,6 +60,7 @@ def run_speedtest():
 
 def push_results(u_id, ping_results, speed_results):
     results = {'unique_id': u_id, 'country': country, 'isp': ISP}
+    print(ping_results)
     results['ping'] = {}
     results['speed'] = {}
     results['speed']['available'] = False
