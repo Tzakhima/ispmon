@@ -24,12 +24,29 @@ def get_metrics():
     template = '''
     {%- for metric in metrics %}
     {%- for destination, data in metric['ping'].items() %}
-ispmon:pacekt_loss_percent{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['packet_loss_rate'] if data['packet_loss_rate'] != None else 0 }}
-ispmon:rtt_avg{ unique_id= "{{ metric['unique_id'] }}", country= "{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['rtt_avg'] if data['rtt_avg'] != None else 0}}
+    {%- if data['packet_loss_rate'] is number %}
+ispmon:pacekt_loss_percent{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['packet_loss_rate'] }}
+    {%- endif %}
+    {%- if data['packet_loss_count'] is number %}
+ispmon:packet_loss_count{ unique_id= "{{ metric['unique_id'] }}", country= "{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['packet_loss_count'] }}
+    {%- endif %}
+    {%- if data['rtt_avg'] is number %}
+ispmon:rtt_avg{ unique_id= "{{ metric['unique_id'] }}", country= "{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['rtt_avg'] }}
+    {%- endif %}
+    {%- if data['packet_transmit'] is number %}
+ispmon:packet_transmit{ unique_id= "{{ metric['unique_id'] }}", country= "{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['packet_transmit'] }}
+    {%- endif %}
+    {%- if data['packet_receive'] is number %}
+ispmon:packet_receive{ unique_id= "{{ metric['unique_id'] }}", country= "{{ metric['country'] }}", isp= "{{ metric['isp'] }}", destination = "{{  destination  }}" }  {{ data['packet_receive'] }}
+    {%- endif %}
     {%- endfor %}
     {%- if metric['speed']['available'] == true %}
-ispmon:speed_download{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}" } {{ metric['speed']['results']['download']  if metric['speed']['results']['download'] != None else 0 }}
-ispmon:speed_upload{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}" } {{ metric['speed']['results']['upload'] if metric['speed']['results']['upload'] != None else 0 }}
+    {%- if metric['speed']['results']['download'] is number %}
+ispmon:speed_download{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}" } {{ metric['speed']['results']['download'] }}
+    {%- endif %}
+    {%- if metric['speed']['results']['upload'] is number %}
+ispmon:speed_upload{ unique_id= "{{ metric['unique_id'] }}", country="{{ metric['country'] }}", isp= "{{ metric['isp'] }}" } {{ metric['speed']['results']['upload'] }}
+    {%- endif %}
     {%- endif %}
     {%- endfor %}
     '''
