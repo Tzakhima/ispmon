@@ -10,6 +10,7 @@ app.config["DEBUG"] = True
 
 # Redis
 message_r = redis.Redis(host='127.0.0.1', port=6379, db=0)
+message_g = redis.Redis(host='127.0.0.1', port=6379, db=1)
 
 
 @app.route('/metrics', methods=['POST'])
@@ -18,6 +19,14 @@ def get_metrics():
     print(data)
     print("Length: " + str(request.content_length) + " IP: " + str(request.remote_addr))
     message_r.lpush('metrics', pickle.dumps(data))
+    return '200'
+
+@app.route('/gometrics', methods=['POST'])
+def get_gometrics():
+    data = request.json
+    print("GO Mterics: ", data)
+    print("Length: " + str(request.content_length) + " IP: " + str(request.remote_addr))
+    message_g.lpush('metrics', pickle.dumps(data))
     return '200'
 
 @app.route('/config', methods=['GET'])
